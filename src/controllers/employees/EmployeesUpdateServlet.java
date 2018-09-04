@@ -68,7 +68,7 @@ public class EmployeesUpdateServlet extends HttpServlet {
 			e.setUpdated_at(new Timestamp(System.currentTimeMillis()));
 			e.setDelete_flag(0);
 			
-			List<String> errors = EmployeeValidator.validate(e, true, true);
+			List<String> errors = EmployeeValidator.validate(e, code_duplicate_check, password_check_flag);
             if(errors.size() > 0) {
                 em.close();
 
@@ -80,10 +80,13 @@ public class EmployeesUpdateServlet extends HttpServlet {
                 rd.forward(request, response);
             } else {
                 em.getTransaction().begin();
-                em.persist(e);
                 em.getTransaction().commit();
                 em.close();
+                
                 request.getSession().setAttribute("flush", "updated successfully");
+                
+                request.getSession().removeAttribute("employee_id");
+                
                 response.sendRedirect(request.getContextPath() + "/employees/index");
             }
 		}

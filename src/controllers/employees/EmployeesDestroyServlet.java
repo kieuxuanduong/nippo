@@ -45,7 +45,6 @@ public class EmployeesDestroyServlet extends HttpServlet {
 			e.setUpdated_at(new Timestamp(System.currentTimeMillis()));
 			
 			em.getTransaction().begin();
-            em.persist(e);
             em.getTransaction().commit();
             em.close();
             
